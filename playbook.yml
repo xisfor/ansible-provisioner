@@ -1,0 +1,37 @@
+---
+- hosts: meanservers
+  sudo: true
+  vars:
+    user: ubuntu
+    project_path: ""
+    user_home: "/home/{{ user }}"
+    doc_root: "/home/{{ user }}/{{ project_path }}current"
+    app_public: "/home/{{ user }}/{{ project_path }}public"
+
+  # vars_prompt:
+  #   - name: "db_name"
+  #     prompt: "db name"
+  #     default: "app_db"
+
+  #   - name: "db_user"
+  #     prompt: "db user"
+  #     default: "root"
+
+  #   - name: "db_pass"
+  #     prompt: "db password"
+  #     default: "password"
+
+  #   - name: "db_host"
+  #     prompt: "db host"
+  #     default: "localhost"
+
+  #   - name: "db_port"
+  #     prompt: "db port"
+  #     default: "3306"
+
+  roles:
+    - init
+    - nodejs
+    - nginx
+    - mongodb
+    - config.development

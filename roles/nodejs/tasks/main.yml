@@ -1,0 +1,13 @@
+---
+- name: add 'chris-lea' PPA for Node.js
+  sudo: true
+  apt_repository: repo=ppa:chris-lea/node.js
+
+- name: install package
+  sudo: true
+  apt: pkg=nodejs
+
+# https://github.com/nodejitsu/forever
+# usage: forever [action] [options] SCRIPT [script-options]
+- name: install forever.js globally
+  npm: name=forever global=yes

@@ -1,0 +1,22 @@
+---
+- name: Add mongodb key
+  sudo: yes
+  apt_key: url=http://keyserver.ubuntu.com/pks/lookup?op=get&fingerprint=on&search=0x7F0CEB10 state=present
+
+- name: Add mongodb repo
+  sudo: true
+  apt_repository: repo='deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen' state=present
+
+- name: Update apt
+  sudo: yes
+  apt: upgrade=yes
+
+- name: Install mongodb
+  sudo: true
+  apt: pkg=mongodb-10gen state=latest
+
+- name: Start mongodb server
+  service: name=mongodb state=started
+
+- name: Add users
+  mongodb_user: database={{ mongodb_db }} name={{ mongodb_user }} password={{ mongodb_pass }} state=present
