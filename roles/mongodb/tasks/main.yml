@@ -18,5 +18,8 @@
 - name: Start mongodb server
   service: name=mongodb state=started
 
+- name: Install pymongo to use with ansible
+  pip: name=pymongo
+
 - name: Add users
   mongodb_user: database={{ mongodb_db }} name={{ mongodb_user }} password={{ mongodb_pass }} state=present

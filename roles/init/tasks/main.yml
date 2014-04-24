@@ -13,6 +13,16 @@
   with_items:
     - curl
     - wget
-    - python-software-properties
     - libcurl4-openssl-dev
+    - build-essential
     - git
+
+- name: Install python tooling
+  apt: pkg={{ item }} state=latest
+  with_items:
+    - python-software-properties
+    - python-setuptools
+    - python-dev
+
+- name: Install pip
+  easy_install: name=pip

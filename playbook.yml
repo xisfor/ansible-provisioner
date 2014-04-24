@@ -1,5 +1,5 @@
 ---
-- hosts: meanservers
+- hosts: all
   sudo: true
   vars:
     user: ubuntu
@@ -34,4 +34,4 @@
     - nodejs
     - nginx
     - mongodb
-    - config.development
+    # - config.development

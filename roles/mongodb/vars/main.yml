@@ -2,7 +2,4 @@
 mongodb_user: "mongouser"
 mongodb_db: "app_db"
 mongodb_port: "27017"
-vars_prompt:
-  - name: "mongodb_pass"
-    prompt: "mongodb password"
-    default: "password"
+mongodb_pass: "password"
