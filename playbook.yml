@@ -5,17 +5,14 @@
     user: ubuntu
     project_path: ""
     user_home: "/home/{{ user }}"
-    doc_root: "/home/{{ user }}/{{ project_path }}current"
+    doc_root: "/home/{{ user }}/{{ project_path }}"
     app_public: "/home/{{ user }}/{{ project_path }}public"
+    server_js: "{{ doc_root }}/server.js"
 
-  # vars_prompt:
-  #   - name: "db_name"
-  #     prompt: "db name"
-  #     default: "app_db"
-
-  #   - name: "db_user"
-  #     prompt: "db user"
-  #     default: "root"
+  vars_prompt:
+    - name: "mongodb_pass"
+      prompt: "mongodb password"
+      default: "password"
 
   #   - name: "db_pass"
   #     prompt: "db password"

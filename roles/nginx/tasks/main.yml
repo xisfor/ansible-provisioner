@@ -1,4 +1,9 @@
 ---
 - name: Install Nginx
-  sudo: yes
+  sudo: true
   apt: pkg=nginx state=latest
+
+- name: Install site template
+  sudo: true
+  template: src=default.tpl dest=/etc/nginx/sites-enabled/default
+  notify: restart nginx
