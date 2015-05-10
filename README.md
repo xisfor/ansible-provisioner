@@ -1,9 +1,12 @@
-### LNNM - Linux Node.js Nginx MongoDB ###
+### Ansible provisioning roles ###
 
-Basic provisioner to get you up and running for Node.js and MongoDB development.
-You could use this for setting up for a MEAN stack, or whatever.
-The Nginx might be a little overkill, but it at least shows how to set it up.
+This is a collection of Ansible roles that can be used for provisioning web servers.
 
-This should work well with Vagrant. My approach would be to add this as a
-submodule to your project.
+Each role should work alone or all together. That said, you should check each one
+that it fits your needs.
 
+Just create a base playbook andselect each role you want to use.
+
+Check the playbook.yml in the root of this project for an example usage.
+
+Bug reports happily received.
