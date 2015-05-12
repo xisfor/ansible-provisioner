@@ -7,7 +7,3 @@
   sudo: true
   apt: pkg=nodejs
 
-# https://github.com/nodejitsu/forever
-# usage: forever [action] [options] SCRIPT [script-options]
-- name: install forever.js globally
-  npm: name=forever global=yes

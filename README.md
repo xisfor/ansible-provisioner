@@ -2,8 +2,8 @@
 
 This is a collection of Ansible roles that can be used for provisioning web servers.
 
-Each role should work alone or all together. That said, you should check each one
-that it fits your needs.
+Many roles will work alone, but some need others to work. I'm afraid you'll have
+to check that out yourself to see what's what. Soz!
 
 Just create a base playbook andselect each role you want to use.
 

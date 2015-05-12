@@ -1,0 +1,6 @@
+---
+# https://github.com/nodejitsu/forever
+# usage: forever [action] [options] SCRIPT [script-options]
+- name: install forever.js globally
+  sudo: true
+  npm: name=forever global=yes

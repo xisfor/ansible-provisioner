@@ -1,0 +1,20 @@
+---
+- name: Add puma tmp folder
+  action: file path={{ app_root }}/tmp/puma state=directory
+
+- name: Add puma startup script
+  sudo: true
+  template: src="puma_initd" dest="/etc/init.d/puma" mode=0751
+
+- name: Add puma to update-rc.d
+  sudo: true
+  shell: "update-rc.d puma defaults"
+
+- name: Add jungle config script
+  sudo: true
+  template: src="puma_run" dest="/usr/local/bin/run-puma" mode=0751
+
+- name: Add jungle config
+  sudo: true
+  template: src="puma.conf" dest="/etc/puma.conf"
+  notify: puma restart

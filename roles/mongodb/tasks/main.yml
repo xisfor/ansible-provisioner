@@ -19,6 +19,7 @@
   service: name=mongodb state=started
 
 - name: Install pymongo to use with ansible
+  sudo: true
   pip: name=pymongo
 
 - name: Add users

@@ -1,0 +1,12 @@
+---
+- name: Install python tooling
+  sudo: yes
+  apt: pkg={{ item }} state=latest
+  with_items:
+    - python-software-properties
+    - python-setuptools
+    - python-dev
+
+- name: Install pip
+  sudo: yes
+  easy_install: name=pip
