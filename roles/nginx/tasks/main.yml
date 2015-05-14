@@ -6,8 +6,7 @@
 - name: Install site template
   sudo: true
   template: src=default.tpl dest=/etc/nginx/sites-enabled/default
-  notify: reload nginx
 
-- name: restart nginx
+- name: reload nginx
   sudo: true
   service: name=nginx enabled=yes state=reloaded
