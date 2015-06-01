@@ -1,0 +1,33 @@
+---
+- name: Install Apache
+  sudo: true
+  apt: pkg=apache2 state=latest
+
+- name: Install Apache Modules
+  apache2_module: state=present name={{ item }}
+  # notify: restart apache
+  sudo: true
+  with_items:
+    - rewrite
+    - vhost_alias
+    - headers
+    - expires
+    - filter
+    - ssl
+
+- file: path=/etc/apache2/ssl/ state=directory
+  sudo: true
+
+- copy: src={{ssl.src_crt}} dest=/etc/apache2/ssl/server.crt
+  sudo: true
+
+- copy: src={{ssl.src_key}} dest=/etc/apache2/ssl/server.key
+  sudo: true
+
+- name: Change default apache2.4 site
+  sudo: true
+  template: src=vhost.conf.tpl dest=/etc/apache2/sites-available/000-default.conf
+
+- name: restart apache
+  sudo: true
+  service: name=apache2 enabled=true state=restarted

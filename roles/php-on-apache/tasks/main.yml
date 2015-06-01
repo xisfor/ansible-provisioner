@@ -1,0 +1,14 @@
+---
+- name: Install PHP packages on Apache
+  sudo: yes
+  apt: pkg={{item}} state=latest
+  with_items:
+    - php5
+    - libapache2-mod-php5
+    - php5-mcrypt
+    - php5-intl
+    - php5-curl
+
+- name: restart apache
+  sudo: yes
+  service: name=apache2 enabled=yes state=restarted
