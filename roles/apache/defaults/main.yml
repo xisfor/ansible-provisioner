@@ -2,3 +2,8 @@
 apache:
   docroot: /vagrant
   servername: localhost
+
+# a pair of insecure ssl keys. DO NOT USE FOR PRODUCTION
+ssl:
+  src_crt: server.crt
+  src_key: server.key
