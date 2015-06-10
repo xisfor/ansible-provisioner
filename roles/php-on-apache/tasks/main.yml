@@ -12,3 +12,11 @@
 - name: restart apache
   sudo: yes
   service: name=apache2 enabled=yes state=restarted
+
+- name: Install phpunit
+  get_url: url=https://phar.phpunit.de/phpunit.phar dest=/usr/local/bin/phpunit mode=555
+  sudo: true
+
+- name: Install Composer globally
+  shell: curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer creates=/usr/local/bin/composer
+  sudo: true

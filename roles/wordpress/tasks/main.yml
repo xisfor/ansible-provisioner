@@ -1,0 +1,16 @@
+---
+- name: Fetch random salts for WordPress config
+  command: curl http://api.wordpress.org/secret-key/1.1/salt/
+  register: wp_salt
+
+- name: Add WordPress config file
+  template: src=wp-config.php dest={{ app_public }}
+  sudo: true
+
+# - name: Change ownership of WordPress installation
+#   file: path={{ app_public }} owner=www-data group=www-data state=directory recurse=yes
+#   sudo: true
+
+# - name: Change upload permissions
+#   file: path={{ app_public }}/wp-content/uploads mode=775 state=directory recurse=yes
+#   sudo: true
