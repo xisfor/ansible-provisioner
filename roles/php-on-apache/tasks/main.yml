@@ -9,6 +9,10 @@
     - php5-intl
     - php5-curl
 
+- name: enable php5-mcrypt
+  sudo: true
+  command: php5enmod mcrypt
+
 - name: restart apache
   sudo: yes
   service: name=apache2 enabled=yes state=restarted
