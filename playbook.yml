@@ -1,34 +1,22 @@
 ---
+
+# Example playbook for your project. Maybe call it vagrant.yml
+#
+# Update the roles_path to be relative from your project,
+# e.g. roles_path: "../ansible-provisioner/roles"
+
 - hosts: all
-  sudo: true
   vars:
-    user: ubuntu
-    project_path: ""
-    user_home: "/home/{{ user }}"
-    doc_root: "/home/{{ user }}/{{ project_path }}"
-    app_public: "/home/{{ user }}/{{ project_path }}public"
-    server_js: "{{ doc_root }}/server.js"
-
-  vars_prompt:
-    - name: "mongodb_pass"
-      prompt: "mongodb password"
-      default: "password"
-
-  #   - name: "db_pass"
-  #     prompt: "db password"
-  #     default: "password"
-
-  #   - name: "db_host"
-  #     prompt: "db host"
-  #     default: "localhost"
-
-  #   - name: "db_port"
-  #     prompt: "db port"
-  #     default: "3306"
+    env: development
+    app_root: '/vagrant'
+    app_user: vagrant
+    app_public: "{{app_root}}/public"
+    roles_path: 'roles'
 
   roles:
-    - init
-    - nodejs
-    - nginx
-    - mongodb
-    # - config.development
+    - "{{roles_path}}/init"
+    - "{{roles_path}}/ruby"
+    - "{{roles_path}}/nodejs"
+    - "{{roles_path}}/python-tools"
+    - "{{roles_path}}/mongodb"
+    - "{{roles_path}}/nginx"
