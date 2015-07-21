@@ -1,3 +1,4 @@
 ---
 # you must set this
 app_public: ""
+env: production

@@ -3,6 +3,10 @@
   sudo: true
   apt: pkg=nginx state=latest
 
+- name: Write nginx conf
+  sudo: true
+  template: src=nginx.conf dest=/etc/nginx/nginx.conf
+
 - name: Install site template
   sudo: true
   template: src=default.tpl dest=/etc/nginx/sites-enabled/default
