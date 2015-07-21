@@ -1,9 +1,19 @@
 ---
-- name: add 'chris-lea' PPA for Node.js
+- name: Add NodeSource key
+  sudo: yes
+  apt_key: url=https://deb.nodesource.com/gpgkey/nodesource.gpg.key state=present
+
+- set_fact:
+    dist_release: "{{ ansible_distribution_release }}"
+
+- name: Add NodeSource repo
   sudo: true
-  apt_repository: repo=ppa:chris-lea/node.js
+  apt_repository: repo="deb https://deb.nodesource.com/{{ node_version }} {{ dist_release }} main" state=present
+
+- name: Update apt
+  sudo: yes
+  apt: upgrade=yes
 
 - name: install package
   sudo: true
   apt: pkg=nodejs
-
