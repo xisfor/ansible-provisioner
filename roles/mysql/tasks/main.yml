@@ -10,6 +10,7 @@
     - mysql-server
     - mysql-client
     - python-mysqldb
+    - libmysqlclient-dev # need this for building things like `gem mysql2`
 
 - name: mysql | Update root password for all root accounts
   mysql_user: name=root host={{ item }} check_implicit_admin=yes password={{ mysql.root_password }} login_user=root login_password={{ mysql.root_password }}
