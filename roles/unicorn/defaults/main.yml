@@ -1,0 +1,3 @@
+---
+unicorn_workers: 2
+app_env: development

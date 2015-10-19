@@ -1,0 +1,123 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides:          unicorn
+# Required-Start:    $remote_fs $syslog
+# Required-Stop:     $remote_fs $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Manage unicorn server
+# Description:       Start, stop, restart unicorn server for a specific application.
+### END INIT INFO
+
+# `set -e` means exit the script as soon as you get a non-zero exit status
+# http://www.computerhope.com/unix/uset.htm
+set -e
+
+##
+# config options
+##
+RAILS_ENV={{ app_env }}
+TIMEOUT=${TIMEOUT-60}
+APP_ROOT="{{ app_root }}"
+PID_PATH=$APP_ROOT/tmp/pids
+PID=$PID_PATH/unicorn.pid
+CMD="cd $APP_ROOT; bundle exec unicorn -D -c $APP_ROOT/config/unicorn-$RAILS_ENV.rb -E $RAILS_ENV"
+AS_USER={{ app_user }}
+set -u
+
+##
+# `kill` can issue signals to processes running on pids. By sending kill with
+# different flags to Unicorn (and nginx), we can get it to perform different
+# actions. We're wrapping up a small collection of these actions into this service.
+#
+# `start`/`stop`/`restart` are common enough.
+# A really useful one for deploy is `upgrade`. This creates a new master, and when
+# it's ready, it kills the old one using oldsig()
+#
+# Further reading
+# Unix signals background: https://en.wikipedia.org/wiki/Unix_signal
+# Unicorn signals: http://unicorn.bogomips.org/SIGNALS.html
+##
+
+# For use with the `upgrade`
+OLD_PIN="$PID.oldbin"
+
+# For sending kill with a signal as set in param $1
+sig () {
+  # need to wrap this kill command up a bit so we can send it through run()
+  KSIG="kill -$1 `cat $PID`"
+  test -s "$PID" && run "$KSIG"
+}
+
+oldsig () {
+  test -s $OLD_PIN && kill -$1 `cat $OLD_PIN`
+}
+
+# `run` ensures commands are called as a specific user,
+# globally set above in AS_USER
+run () {
+  if [ "$(id -un)" = "$AS_USER" ]; then
+    eval $1
+  else
+    su -c "$1" - $AS_USER
+  fi
+}
+
+# For killing specific workers. used by monit
+workersig () {
+  workerpid=$PID_PATH/unicorn.worker.$2.pid
+  test -s "$workerpid" && kill -$1 `cat $workerpid`
+}
+
+# Take the options passed in `sudo service unicorn <action>`
+# Note that `start`, `restart` and `upgrade` fall back to `run "$CMD"` on fail.
+case "$1" in
+start)
+  sig 0 && echo >&2 "Already running" && exit 0
+  run "$CMD"
+  ;;
+stop)
+  sig QUIT && exit 0
+  echo >&2 "Not running"
+  ;;
+force-stop)
+  sig TERM && exit 0
+  echo >&2 "Not running"
+  ;;
+restart|reload)
+  sig HUP && echo reloaded OK && exit 0
+  echo >&2 "Couldn't reload, starting '$CMD' instead"
+  run "$CMD"
+  ;;
+upgrade)
+  if sig USR2 && sleep 2 && sig 0 && oldsig QUIT
+  then
+    n=$TIMEOUT
+    while test -s $OLD_PIN && test $n -ge 0
+    do
+      printf '.' && sleep 1 && n=$(( $n - 1 ))
+    done
+    echo
+
+    if test $n -lt 0 && test -s $OLD_PIN
+    then
+      echo >&2 "$OLD_PIN still exists after $TIMEOUT seconds"
+      exit 1
+    fi
+    exit 0
+  fi
+  echo >&2 "Couldn't upgrade, starting '$CMD' instead"
+  run "$CMD"
+  ;;
+reopen-logs)
+  sig USR1
+  ;;
+kill-worker)
+  workersig QUIT $2 && exit 0
+  echo >&2 "Worker not running"
+;;
+*)
+  echo >&2 "Usage: $0 <start|stop|restart|upgrade|force-stop|reopen-logs|kill-worker>"
+  exit 1
+  ;;
+esac

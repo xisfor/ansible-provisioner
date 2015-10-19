@@ -1,0 +1,25 @@
+---
+- name: add unicorn startup script
+  sudo: true
+  template: src="etc_init.d_unicorn" dest="/etc/init.d/unicorn" mode=0751
+
+- name: add unicorn to update-rc.d
+  sudo: true
+  shell: "update-rc.d unicorn defaults"
+  when: monit_present is not defined
+
+- name: Copy monit unicorn service file
+  sudo: true
+  template: src="etc_monit_conf.d_unicorn" dest="/etc/monit/conf.d/unicorn"
+  when: monit_present is defined
+
+# - name: Creates unicorn config directory
+#   file: path={{ app_root }}/config state=directory
+
+- name: check for config/unicorn-{{ app_env }}.rb
+  shell: 'test -e {{ app_root }}/config/unicorn-{{ app_env }}.rb && echo "true" || echo "false"'
+  register: has_unicorn_conf
+
+- name: unicorn config
+  template: src="config_unicorn_rb" dest="{{ app_root }}/config/unicorn-{{ app_env }}.rb"
+  # when: has_unicorn_conf.stdout != "true"
