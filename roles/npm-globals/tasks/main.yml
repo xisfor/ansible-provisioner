@@ -1,0 +1,6 @@
+---
+- name: npm | Install global npm packages
+  sudo: yes
+  npm: name={{item}} global=true
+  with_items:
+    npm_globals
