@@ -8,6 +8,7 @@
     - php5-mcrypt
     - php5-intl
     - php5-curl
+    - php5-gd
 
 - name: enable php5-mcrypt
   sudo: true
