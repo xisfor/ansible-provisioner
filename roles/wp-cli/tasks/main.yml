@@ -1,0 +1,11 @@
+---
+- name: Install WP-CLI
+  sudo: true
+  get_url: url="{{ phar_url }}" dest="{{ bin_path }}" mode=0755
+
+- name: Install WP-CLI tab completions
+  sudo: true
+  get_url:
+    url="{{ wp_cli_completion_url }}"
+    dest="{{ wp_cli_completion_path }}"
+    mode=0644
