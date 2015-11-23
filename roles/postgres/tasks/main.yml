@@ -1,0 +1,24 @@
+---
+
+- apt: pkg={{ item }} state=latest
+  sudo: yes
+  with_items:
+    - postgresql
+    - postgresql-client
+    - python-psycopg2
+
+- set_fact: port=5432
+  when: port is not defined
+
+- fail: msg="No database"
+  when: not pg.db
+
+- postgresql_db: name="{{ pg.db }}" port="{{ port }}"
+  sudo: true
+  sudo_user: postgres
+
+- postgresql_user: name="{{ pg.super }}" encrypted="false" password="{{ pg.pw }}" db="{{ pg.db }}" priv="{{ pg.super_priv }}"
+  sudo: true
+  sudo_user: postgres
+
+# - postgresql_user: name="{{ pg.ro }}" encrypted="false" password="{{ pg.ro_pw }}" db="{{ pg.db }}" priv="{{ pg.ro_priv }}"

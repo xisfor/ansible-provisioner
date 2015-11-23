@@ -1,0 +1,10 @@
+---
+pg:
+  db: app_db
+  pw: password1
+  super: postgres
+  super_priv: "ALL"
+
+# ro: "" # Read-only user (or blank for none)
+# ro_pw: "" # Read-only user password (if applicable)
+# ro_priv: "SELECT"
