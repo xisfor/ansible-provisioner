@@ -6,6 +6,7 @@
     - postgresql
     - postgresql-client
     - python-psycopg2
+    - postgresql-server-dev-9.3
 
 - set_fact: port=5432
   when: port is not defined
