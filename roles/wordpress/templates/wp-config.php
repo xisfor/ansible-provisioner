@@ -22,6 +22,10 @@ define('WP_DEBUG_DISPLAY', {{ wp_debug_display }});
 define("WP_ENV", "{{ env }}");
 define("CONCATENATE_SCRIPTS", false);
 
+{% if wpcf7_autop is defined %}
+define("WPCF7_AUTOP", {{ wpcf7_autop }}); // set to false to remove <br> tags
+{% endif %}
+
 if (!defined("ABSPATH")) {
   define("ABSPATH", dirname(__FILE__) . "/");
 }
